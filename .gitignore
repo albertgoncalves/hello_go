@@ -1,0 +1,8 @@
+*
+!.gitignore
+!*.go
+!shell.nix
+!goroutines
+!rest
+!server
+!func

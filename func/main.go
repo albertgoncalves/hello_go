@@ -14,15 +14,15 @@ func add(a int) func(int) int {
 }
 
 func main() {
-    seed := time.Now().UnixNano()
+    var seed int64 = time.Now().UnixNano()
     r := rand.New(rand.NewSource(seed))
 
-    gen := func() int {
-        return r.Intn(100)
+    gen := func(k int) int {
+        return r.Intn(k)
     }
 
-    a := gen()
-    b := gen()
+    const a int = 100
+    b := gen(a)
 
     fmt.Println(add(a)(b))
 }

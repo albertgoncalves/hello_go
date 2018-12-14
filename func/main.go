@@ -7,22 +7,25 @@ import (
 )
 
 func add(a int) func(int) int {
-    f := func(b int) int {
+    var f = func(b int) int {
         return a + b
     }
     return f
 }
 
+var gen = func(r *rand.Rand, k int) int {
+    return r.Intn(k)
+}
+
 func main() {
     var seed int64 = time.Now().UnixNano()
-    r := rand.New(rand.NewSource(seed))
-
-    gen := func(k int) int {
-        return r.Intn(k)
-    }
+    var r *rand.Rand = rand.New(rand.NewSource(seed))
 
     const a int = 100
-    b := gen(a)
+    var b int = gen(r, a)
+    var c int = gen(r, b)
+    var d int = add(a)(b)
+    var e int = add(c)(d)
 
-    fmt.Println(add(a)(b))
+    fmt.Println(e)
 }

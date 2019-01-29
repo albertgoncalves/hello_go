@@ -21,8 +21,7 @@ func main() {
     var seed int64 = time.Now().UnixNano()
     var r *rand.Rand = rand.New(rand.NewSource(seed))
 
-    const a int = 100
-    var b int = gen(r, a)
+    const a, b = 100, 200
     var c int = gen(r, b)
     var d int = add(a)(b)
     var e int = add(c)(d)

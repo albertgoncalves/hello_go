@@ -9,6 +9,10 @@ with pkgs; mkShell {
             alias ll='ls -al'
         fi
 
+        if [ ! -d ./pngs/ ]; then
+            mkdir pngs
+        fi
+
         gofmts() {
             gofmt -w $1
 

@@ -2,9 +2,13 @@
 with pkgs; mkShell {
     name = "Go";
     buildInputs = [ go_1_11
-                    tmux
                   ];
     shellHook = ''
+        if [ $(uname -s) = "Darwin" ]; then
+            alias ls='ls --color=auto'
+            alias ll='ls -al'
+        fi
+
         gofmts() {
             gofmt -w $1
 

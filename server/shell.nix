@@ -1,12 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
-
 with pkgs; mkShell {
-    name = "go";
-
+    name = "Go";
     buildInputs = [ go_1_11
                     tmux
                   ];
-
     shellHook = ''
         if [ ! -e ./src/ ]; then
             mkdir src

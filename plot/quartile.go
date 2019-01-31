@@ -1,37 +1,18 @@
 package main
 
 import (
-    "fmt"
-    "gonum.org/v1/plot"
     "gonum.org/v1/plot/plotter"
     "gonum.org/v1/plot/vg"
+    U "lib"
     "math/rand"
 )
 
 // $ go get gonum.org/v1/plot
 // https://github.com/gonum/plot/wiki/Example-plots
 
-// examine types of objects
-// fmt.Println(typeOf(uniform) ...
-func typeOf(v interface{}) string {
-    return fmt.Sprintf("%T", v)
-}
-
-func alarm(err error) {
-    if err != nil {
-        panic(err)
-    }
-}
-
-func initPlot() *plot.Plot {
-    p, err := plot.New()
-    alarm(err)
-    return p
-}
-
 func quartilePlot(i float64, x plotter.Values) *plotter.QuartPlot {
     q, err := plotter.NewQuartPlot(i, x)
-    alarm(err)
+    U.PanicIf(err)
     return q
 }
 
@@ -49,7 +30,7 @@ func main() {
         expon[i] = rand.ExpFloat64()
     }
 
-    p := initPlot()
+    p := U.InitPlot()
 
     p.Title.Text = "Quartile plots"
     p.Y.Label.Text = "Values"
@@ -62,5 +43,5 @@ func main() {
         "Normal\nDistribution",
         "Exponential\nDistribution")
 
-    alarm(p.Save(6*vg.Inch, 8*vg.Inch, "pngs/quartile.png"))
+    U.PanicIf(p.Save(6*vg.Inch, 8*vg.Inch, "pngs/quartile.png"))
 }

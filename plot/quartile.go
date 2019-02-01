@@ -35,13 +35,17 @@ func main() {
     p.Title.Text = "Quartile plots"
     p.Y.Label.Text = "Values"
 
-    p.Add(quartilePlot(0, uniform),
+    p.Add(
+        quartilePlot(0, uniform),
         quartilePlot(1, normal),
-        quartilePlot(2, expon))
+        quartilePlot(2, expon),
+    )
 
-    p.NominalX("Uniform\nDistribution",
+    p.NominalX(
+        "Uniform\nDistribution",
         "Normal\nDistribution",
-        "Exponential\nDistribution")
+        "Exponential\nDistribution",
+    )
 
     U.PanicIf(p.Save(6*vg.Inch, 8*vg.Inch, "pngs/quartile.png"))
 }

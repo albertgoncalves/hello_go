@@ -13,13 +13,15 @@ var data = [][]string{
 
 func main() {
     const fn string = "data.csv"
+    const delim rune = '\t'
 
     file, err := os.Create(fn)
     checkError("Cannot create file", err)
     defer file.Close()
 
     writer := csv.NewWriter(file)
-    w.WriteAll(data) // method includes 'defer writer.Flush()'
+    writer.Comma = delim
+    writer.WriteAll(data) // method includes 'defer writer.Flush()'
 }
 
 func checkError(message string, err error) {

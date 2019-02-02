@@ -33,6 +33,13 @@ func typeOf(v interface{}) string {
     return fmt.Sprintf("%T", v)
 }
 
+func readCsv(fn string) *os.File {
+    csvFile, err := os.Open(fn)
+    panicIf(err)
+
+    return csvFile
+}
+
 func cropHeader(r *csv.Reader) {
     _, err := r.Read()
     panicIf(err)
@@ -68,13 +75,28 @@ func process(r *csv.Reader) []Game {
     return games
 }
 
+func extractGoals(games []Game) ([]int, []int) {
+    n := len(games)
+    awayGoals := make([]int, n)
+    homeGoals := make([]int, n)
+
+    for i, g := range games {
+        awayGoals[i] = g.AwayGoals
+        homeGoals[i] = g.HomeGoals
+    }
+
+    return awayGoals, homeGoals
+}
+
+func printAll(xs ...interface{}) {
+    for _, x := range xs {
+        fmt.Println(x)
+    }
+}
+
 func main() {
-    csvFile, err := os.Open("playoffs_2018.csv")
-    panicIf(err)
+    csvFile := readCsv("playoffs_2018.csv")
     defer csvFile.Close()
 
-    games := process(csv.NewReader(bufio.NewReader(csvFile)))
-    for _, g := range games {
-        fmt.Println(g)
-    }
+    printAll(extractGoals(process(csv.NewReader(bufio.NewReader(csvFile)))))
 }

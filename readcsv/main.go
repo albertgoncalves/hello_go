@@ -38,30 +38,6 @@ func cropHeader(r *csv.Reader) {
     panicIf(err)
 }
 
-func channelRows(r *csv.Reader) chan []string {
-    cropHeader(r)
-
-    rows := make(chan []string)
-    go func() {
-        defer close(rows)
-
-        for {
-            row, err := r.Read()
-            if err != nil {
-                if err == io.EOF {
-                    break
-                } else {
-                    panic(err)
-                }
-            }
-
-            rows <- row
-        }
-    }()
-
-    return rows
-}
-
 func parseRow(row []string) Game {
     return Game{
         Date:      row[0],
@@ -72,10 +48,20 @@ func parseRow(row []string) Game {
     }
 }
 
-func process(rows chan []string) []Game {
-    var games []Game
+func process(r *csv.Reader) []Game {
+    cropHeader(r)
 
-    for row := range rows {
+    var games []Game
+    for {
+        row, err := r.Read()
+        if err != nil {
+            if err == io.EOF {
+                break
+            } else {
+                panic(err)
+            }
+        }
+
         games = append(games, parseRow(row))
     }
 
@@ -87,7 +73,7 @@ func main() {
     panicIf(err)
     defer csvFile.Close()
 
-    games := process(channelRows(csv.NewReader(bufio.NewReader(csvFile))))
+    games := process(csv.NewReader(bufio.NewReader(csvFile)))
     for _, g := range games {
         fmt.Println(g)
     }

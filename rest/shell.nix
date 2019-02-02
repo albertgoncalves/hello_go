@@ -17,6 +17,17 @@ with pkgs; mkShell {
             unzip src/mux.zip -d src/
         fi
 
+        gofmts() {
+            gofmt -w -s -e $1
+
+            if (( $? == 0 )); then
+                awk '{ gsub(/\t/, "    "); print }' < $1 > tmp
+                cat tmp > $1
+                rm tmp
+            fi
+        }
+
+        export -f gofmts
         export GOPATH=`pwd`
     '';
 }

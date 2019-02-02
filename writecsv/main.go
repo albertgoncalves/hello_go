@@ -11,6 +11,12 @@ var data = [][]string{
     {"1", "2", "3"},
 }
 
+func checkError(message string, err error) {
+    if err != nil {
+        log.Fatal(message, err)
+    }
+}
+
 func main() {
     const fn string = "data.csv"
     const delim rune = ';'
@@ -22,10 +28,4 @@ func main() {
     writer := csv.NewWriter(file)
     writer.Comma = delim
     writer.WriteAll(data) // method includes 'defer writer.Flush()'
-}
-
-func checkError(message string, err error) {
-    if err != nil {
-        log.Fatal(message, err)
-    }
 }

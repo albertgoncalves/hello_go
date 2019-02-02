@@ -13,8 +13,10 @@ func panicIf(err error) {
 }
 
 func printHref(i int, s *goquery.Selection) {
-    href, _ := s.Attr("href")
-    fmt.Printf("%d %s\n", i, href)
+    href, exists := s.Attr("href")
+    if exists {
+        fmt.Printf("%d %s\n", i, href)
+    }
 }
 
 func main() {

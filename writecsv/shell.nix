@@ -2,6 +2,7 @@
 with pkgs; mkShell {
     name = "Go";
     buildInputs = [ go_1_11
+                    python36Packages.csvkit
                   ];
     shellHook = ''
         export GOPATH=`pwd`
@@ -24,5 +25,6 @@ with pkgs; mkShell {
         }
 
         export -f gofmts
+        alias csvlook="csvlook --no-inference -d=';'"
     '';
 }

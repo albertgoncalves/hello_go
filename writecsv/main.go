@@ -7,13 +7,13 @@ import (
 )
 
 var data = [][]string{
-    {"a", "b", "b"},
+    {"a", "b", "c"},
     {"1", "2", "3"},
 }
 
 func main() {
     const fn string = "data.csv"
-    const delim rune = '\t'
+    const delim rune = ';'
 
     file, err := os.Create(fn)
     checkError("Cannot create file", err)

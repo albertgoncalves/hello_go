@@ -38,5 +38,8 @@ func pipeline(s string) map[string]int {
 }
 
 func main() {
-    F.Println(pipeline(readFile()))
+    m := pipeline(readFile())
+    for k, v := range m {
+        F.Printf("{%s: %d}\n", k, v)
+    }
 }

@@ -15,9 +15,9 @@ func check(err error) {
 }
 
 func readStdin() string {
-    data, err := ioutil.ReadAll(os.Stdin)
+    bytes, err := ioutil.ReadAll(os.Stdin)
     check(err)
-    return string(data)
+    return string(bytes)
 }
 
 func hist(xs []string) map[string]int {

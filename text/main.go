@@ -1,9 +1,10 @@
 package main
 
 import (
-    F "fmt"
-    I "io/ioutil"
-    R "regexp"
+    "fmt"
+    "io/ioutil"
+    "os"
+    "regexp"
     S "strings"
 )
 
@@ -13,10 +14,10 @@ func check(err error) {
     }
 }
 
-func readFile() string {
-    text, err := I.ReadFile("text")
+func readStdin() string {
+    data, err := ioutil.ReadAll(os.Stdin)
     check(err)
-    return string(text)
+    return string(data)
 }
 
 func hist(xs []string) map[string]int {
@@ -32,14 +33,22 @@ func hist(xs []string) map[string]int {
 }
 
 func pipeline(s string) map[string]int {
-    reg, err := R.Compile("[^a-z0-9 ]+")
+    reg, err := regexp.Compile("[^a-z0-9 ]+")
     check(err)
     return hist(S.Fields(reg.ReplaceAllString(S.ToLower(s), "")))
 }
 
+func handleError() {
+    if err := recover(); err != nil {
+        fmt.Printf("%v\n", err)
+        os.Exit(1)
+    }
+}
+
 func main() {
-    m := pipeline(readFile())
+    defer handleError()
+    m := pipeline(readStdin())
     for k, v := range m {
-        F.Printf("{%s: %d}\n", k, v)
+        fmt.Printf("{%s: %d}\n", k, v)
     }
 }

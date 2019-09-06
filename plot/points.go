@@ -77,5 +77,5 @@ func main() {
     p.Legend.Add("line", l)
     p.Legend.Add("line points", lpLine, lpPoints)
 
-    U.PanicIf(p.Save(k*vg.Inch, k*vg.Inch, "pngs/points.png"))
+    U.PanicIf(p.Save(k*vg.Inch, k*vg.Inch, "out/points.png"))
 }

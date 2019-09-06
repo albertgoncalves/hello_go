@@ -47,5 +47,5 @@ func main() {
         "Exponential\nDistribution",
     )
 
-    U.PanicIf(p.Save(6*vg.Inch, 8*vg.Inch, "pngs/quartile.png"))
+    U.PanicIf(p.Save(6*vg.Inch, 8*vg.Inch, "out/quartile.png"))
 }

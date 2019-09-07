@@ -4,10 +4,9 @@ import (
     "errors"
     "fmt"
     "log"
-    "strings"
 )
 
-type Data interface {}
+type Data interface{}
 
 type Value interface {
     toString() string
@@ -175,16 +174,16 @@ func (t *Tree) Traverse(n *Node, f func(*Node)) {
 }
 
 func printTree(tree *Tree) {
+    fmt.Print("Tree")
     tree.Traverse(
         tree.Root,
-        func(n *Node) { fmt.Print(n.Value, ": ", n.Data, ", ") },
+        func(n *Node) { fmt.Printf("\t%v %v\n", n.Value, n.Data) },
     )
-    fmt.Println("\n")
+    fmt.Println()
 }
 
-func bold(s string) string {
-    return strings.Join([]string{"\033[1m", s, "\033[0m"}, "")
-}
+const BOLD = "\033[1m"
+const END = "\033[0m"
 
 func main() {
     values := []StringValue{
@@ -209,38 +208,40 @@ func main() {
         }
     }
     {
-        fmt.Println(bold("MULTI-NODE TREE\n"))
-        fmt.Println(bold("Sorted values"))
+        fmt.Printf("%sMULTI-NODE TREE%s\n", BOLD, END)
+        fmt.Printf("%sSorted values%s\n", BOLD, END)
         printTree(tree)
     }
     x := StringValue{"e"}
     {
-        fmt.Println(bold(fmt.Sprintf("Find node %v", x)))
+        fmt.Printf("%sFind node%s %v\n", BOLD, END, x)
         d, found := tree.Find(x)
         if !found {
             log.Fatalf("Cannot find %v", x)
         }
-        fmt.Printf("Found: %v %v\n\n", x, d)
+        fmt.Printf("Found\t%v %v\n\n", x, d)
     }
     {
         err := tree.Delete(x)
         if err != nil {
             log.Fatalf("Error deleting %v\nError: %s", x, err)
         }
-        fmt.Println(bold(fmt.Sprintf("After deleting %v", x)))
+        fmt.Printf("%sAfter deleting%s %v\n", BOLD, END, x)
         printTree(tree)
     }
     y := StringValue{"a"}
     {
-        fmt.Println(bold("\nSINGLE-NODE TREE\n"))
+        fmt.Printf("%sSINGLE-NODE TREE%s\n", BOLD, END)
         tree = &Tree{}
+        fmt.Printf("%sBefore inserting%s %v\n", BOLD, END, y)
+        printTree(tree)
         tree.Insert(y, "alpha")
-        fmt.Println(bold("After insert:"))
+        fmt.Printf("\n%sAfter inserting%s %v\n", BOLD, END, y)
         printTree(tree)
     }
     {
         tree.Delete(y)
-        fmt.Println(bold(fmt.Sprintf("After deleting %v", y)))
+        fmt.Printf("%sAfter deleting%s %v\n", BOLD, END, y)
         printTree(tree)
     }
 }

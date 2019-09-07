@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if [ "$(uname -s)" = "Darwin" ]; then
+    alias ls='ls --color=auto'
+    alias ll='ls -l'
+else
+    alias open="xdg-open"
+fi
+
+export GOPATH
+GOPATH=$(pwd)
+
+if [ ! -f "$GOPATH/.init" ]; then
+    go get -v golang.org/x/lint/golint
+    touch "$GOPATH/.init"
+fi
+
+gofmts() {
+    if gofmt -w -s -e "$1"; then
+        awk '{ gsub(/\t/, "    "); print }' < "$1" > tmp
+        cat tmp > "$1"
+        rm tmp
+    fi
+}
+
+golint() {
+    "$GOPATH/bin/golint" "$1" \
+        | sed -n -e '/exported .* should have comment or be unexported/!p'
+}
+
+export -f gofmts
+export -f golint

@@ -3,6 +3,6 @@
 set -e
 
 echo "$ time go build -race"
-time go build -race -o bin/main main.go
+time go build -a -race -o bin/main main.go
 printf "\n$ time bin/main\n"
 time bin/main
